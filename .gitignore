@@ -1,3 +1,5 @@
 django
 .idea/*
-*__*__*
+book_sharing/*/__pycache__/*
+book_sharing/*/*/__pycache__/*
+book_sharing/db.sqlite3
