@@ -17,7 +17,7 @@ def user_profile(request):
             return redirect('/user/profile')
         else:
             form = ProfileForm(instance=user)
-            return render(request, 'login/profile.html', {'form': form})
+            return render(request, 'login/profile.html', {'form': form, 'user':user.user.username})
     else:
         return redirect('/user/signin')
 
@@ -32,11 +32,11 @@ def sign_in(request):
 
         if user is not None:
             login(request, user)
-            return render(request, 'login/success.html', {})
+            return redirect('/')
         else:
             return render(request, 'login/failed.html', {})
     else:
-        return render(request, 'login/login.html', {})
+        return render(request, 'login/login.html', {'user':'signin'})
 
 
 def sign_out(request):

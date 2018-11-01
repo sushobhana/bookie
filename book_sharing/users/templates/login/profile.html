@@ -1,7 +1,7 @@
 {% extends 'login/base.html' %}
 
 {% block content %}
-    <h1>Profile Information</h1>
+    <h1>Hi {{ user }} !</h1>
     <form method="POST">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default" onsubmit="alert('saved')">Save</button>
