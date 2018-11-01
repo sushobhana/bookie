@@ -12,7 +12,10 @@ class IntegerRangeField(models.IntegerField):
         return super(IntegerRangeField, self).formfield(**defaults)
 
 class Tags(models.Model):
-    name = models.CharField(max_length=10)
+
+    name = models.CharField(
+        max_length=20,
+    )
 
     def __str__(self):
         return self.name
@@ -23,7 +26,7 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     publisher = models.CharField(max_length=100)
     edition = models.IntegerField()
-    tags = models.ManyToManyField(Tags, null=True, blank=True)
+    tags = models.ManyToManyField(Tags)
     description = models.CharField(max_length=300)
     isbn = models.CharField(primary_key=True, max_length=300, default='0000')
     rating = IntegerRangeField(min_value=0, max_value=10)
