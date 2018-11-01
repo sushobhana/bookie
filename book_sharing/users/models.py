@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
 
     GENDER_CHOICES = (
-        ('M', 'MALE'),
-        ('F','FEMALE'),
-        ('O','OTHER'),
+        ('M', 'Male'),
+        ('F','Female'),
+        ('O','Other'),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -18,6 +18,8 @@ class UserProfile(models.Model):
     gender = models.CharField(
         max_length=1,
         choices=GENDER_CHOICES,
+        null=False,
+        blank=False,
     )
 
     def __str__(self):
