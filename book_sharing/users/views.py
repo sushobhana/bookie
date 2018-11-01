@@ -13,8 +13,9 @@ def user_profile(request):
 
         if request.method == 'POST':
             form = ProfileForm(request.POST, instance=user)
-            form.save()
-            return redirect('/user/profile')
+            if form.is_valid():
+                form.save()
+            return render(request, 'login/profile.html', {'form': form, 'user':user.user.username})
         else:
             form = ProfileForm(instance=user)
             return render(request, 'login/profile.html', {'form': form, 'user':user.user.username})
