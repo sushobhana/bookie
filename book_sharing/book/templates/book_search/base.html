@@ -41,11 +41,20 @@
     </div>
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
-            <a href="/user" class="navbar-brand d-flex align-items-center">
-                              <img src="{% static 'user_signin.png' %}" class="mr-1"></img>
-
-                <strong>{{ user }}</strong>
-            </a>
+            <li class="nav-item dropdown">
+                <a class="navbar-brand d-flex align-items-center dropdown-toggle" href="#"
+                   id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    <img src="{% static 'user_signin.png' %}" class="mr-1"></img>
+                    <strong>{{ user }}</strong>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/user/profile">Profile</a>
+                    <a class="dropdown-item" href="/user/signout">Log out</a>
+                    <a class="dropdown-item" href="/user/signin">Change user</a>
+                    <a class="dropdown-item" href="/user/register">Sign up</a>
+                </div>
+            </li>
             <a href="/" class="navbar-brand d-flex align-items-center">
                 <img src="{% static 'book.png' %}" class="mr-1"></img>
                 <strong>Bookie</strong>
@@ -64,7 +73,7 @@
         <div class="container">
             {#            <h1 class="jumbotron-heading">Bookie Search</h1></div>#}
             {#            <p class="lead text-muted text-center bold">Search book information</p>#}
-                  <img class="mb-4" src="{% static 'search.png' %}" alt="" width="100" height="100">
+            <img class="mb-4" src="{% static 'search.png' %}" alt="" width="100" height="100">
 
             <form>
                 <input class="form-control input-group-lg text-center" type="search"
