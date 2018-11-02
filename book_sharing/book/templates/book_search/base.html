@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'album.css' %}" rel="stylesheet">
+    {#    <link href="{% static 'offcanvas.css' %}" rel="stylesheet">#}
 </head>
 <body>
 
@@ -65,7 +66,27 @@
             </button>
         </div>
     </div>
+
+    <div class="nav-scroller bg-white shadow-sm">
+        <nav class="nav nav-underline">
+            <a class="nav-link active" href="#">Dashboard</a>
+            <a class="nav-link" href="#">
+                Friends
+                <span class="badge badge-pill bg-light align-text-bottom">0</span>
+            </a>
+            <a class="nav-link" href="#">Explore</a>
+            <a class="nav-link" href="#">Forum</a>
+            {#            <a class="nav-link" href="#">Link</a>#}
+            {#            <a class="nav-link" href="#">Link</a>#}
+            {#            <a class="nav-link" href="#">Link</a>#}
+            {#            <a class="nav-link" href="#">Link</a>#}
+            {#            <a class="nav-link" href="#">Link</a>#}
+        </nav>
+    </div>
+
+
 </header>
+
 
 <main role="main">
 
@@ -97,9 +118,8 @@
         <p class="float-right">
             <a href="#">Back to top</a>
         </p>
-        <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-        <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting
-            started guide</a>.</p>
+        <p> Bookie &copy; <strong>HackOverflow</strong></p>
+        <p> Powered by bootstrap </p>
     </div>
 </footer>
 
@@ -113,5 +133,6 @@
 <script src="{% static 'js/vendor/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/vendor/holder.min.js' %}"></script>
+{#<script src="{% static 'offcanvas.js' %}"></script>#}
 </body>
 </html>
