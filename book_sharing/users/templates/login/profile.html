@@ -2,14 +2,14 @@
 
 {% block content %}
     {% if not msg %}
-    <div class="alert alert-info" role="alert">
-        Profile Info
-    </div>
+        <div class="alert alert-info" role="alert">
+            Profile Info
+        </div>
     {% endif %}
     {% if msg %}
-    <div class="alert alert-danger" role="alert">
-        {{ msg }}
-    </div>
+        <div class="alert alert-danger" role="alert">
+            {{ msg }}
+        </div>
     {% endif %}
     {% if user_profile %}
         <table class="table">
@@ -41,6 +41,15 @@
 
         {% if own %}
             <a class="button btn btn-primary" href="/user/profile_edit">Edit</a>
+        {% endif %}
+        {% if not own %}
+            {% if isfollows %}
+                <a class="button btn btn-primary" href="/user/unfollow?user={{ user_profile.user.username }}">UnFollow</a>
+            {% endif %}
+
+            {% if not isfollows %}
+                <a class="button btn btn-primary" href="/user/follow?user={{ user_profile.user.username }}">Follow</a>
+            {% endif %}
         {% endif %}
     {% endif %}
 {% endblock %}

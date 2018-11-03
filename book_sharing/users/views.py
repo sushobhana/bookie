@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import UserProfile
+from .models import UserProfile, UserFollowers
 
 # Create your views here.
 
@@ -24,10 +24,12 @@ def user_profile_edit(request):
             form = ProfileForm(request.POST, instance=profile)
             if form.is_valid():
                 form.save()
-            return render(request, 'login/profile_form.html', {'form': form, 'user': user.username})
+            return render(request, 'login/profile_form.html', {'form': form, 'user': user.username,
+                                                               'fno': get_no_followers(request.user)})
         else:
             form = ProfileForm(instance=profile)
-            return render(request, 'login/profile_form.html', {'form': form, 'user': user.username})
+            return render(request, 'login/profile_form.html', {'form': form, 'user': user.username,
+                                                               'fno': get_no_followers(request.user)})
     else:
 
         return redirect('/user/signin')
@@ -47,10 +49,20 @@ def user_profile(request):
             own = True
         if user:
             userprofile = UserProfile.objects.filter(user=user)[0]
+            check = UserFollowers.objects.filter(followed_by=request.user, followed_to=user)
 
-            return render(request, 'login/profile.html', {'user_profile': userprofile, 'own': own})
+            if check:
+                check = True
+            else:
+                check = False
+
+            print(check)
+
+            return render(request, 'login/profile.html', {'user_profile': userprofile, 'own': own,
+                                                          'isfollows': check, 'fno': get_no_followers(request.user)})
         else:
-            return render(request, 'login/profile.html', {'own': own, 'msg': 'No user name'})
+            return render(request, 'login/profile.html', {'own': own, 'msg': 'No user name',
+                                                          'fno': get_no_followers(request.user)})
     else:
         return redirect('/user/login')
 
@@ -132,3 +144,51 @@ def register_profile(request):
         form = ProfileForm(instance=user)
         return render(request, 'login/register_profile.html', {'form': form, 'user': user.username})
 
+
+def follow(request):
+
+    if request.user.is_authenticated:
+        username = request.GET.get('user')
+
+        user = User.objects.filter(username=username)
+
+        if user:
+            user = user[0]
+        else:
+            return redirect('/user/profile?user={0}'.format(username))
+
+        check = UserFollowers.objects.filter(followed_by=request.user, followed_to=user)
+
+        if not check:
+            print(check)
+            UserFollowers.objects.create(followed_by=request.user, followed_to=user).save()
+
+        return redirect('/user/profile?user={0}'.format(username))
+    else:
+        redirect('/user/login')
+
+
+def unfollow(request):
+
+    if request.user.is_authenticated:
+        username = request.GET.get('user')
+
+        user = User.objects.filter(username=username)
+
+        if user:
+            user = user[0]
+        else:
+            return redirect('/user/profile?user={0}'.format(username))
+
+        check = UserFollowers.objects.filter(followed_by=request.user, followed_to=user)
+
+        if check:
+            check.delete()
+
+        return redirect('/user/profile?user={0}'.format(username))
+    else:
+        redirect('/user/login')
+
+
+def get_no_followers(user):
+    return UserFollowers.objects.filter(followed_by=user).count()

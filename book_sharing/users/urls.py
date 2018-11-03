@@ -25,5 +25,7 @@ urlpatterns = [
     path('signout', views.sign_out),
     path('register', views.register_user),
     path('register_profile', views.register_profile),
+    path('follow', views.follow),
+    path('unfollow', views.unfollow),
 
 ]

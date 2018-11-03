@@ -3,6 +3,7 @@ from users.models import UserProfile
 from .models import UsersBook, Book
 from .forms import BookForm
 from django.db.models import Q
+from users.views import get_no_followers
 
 
 # Create your views here.
@@ -12,7 +13,9 @@ def home(request):
     if request.user.is_authenticated:
         print(request.user)
         books = Book.objects.all()
-        return render(request, 'book_search/gallery.html', {'user': request.user, 'books': books})
+
+        return render(request, 'book_search/gallery.html', {'user': request.user, 'books': books,
+                                                            'fno':get_no_followers(request.user)})
     else:
         return render(request, 'book_search/gallery.html', {'user': 'Signin'})
 
@@ -72,4 +75,5 @@ def search(request):
     if len(books) == 0:
         text = 'No Results found :('
 
-    return render(request, 'book_search/gallery.html', {'user': request.user, 'books': list_books, 'text': text})
+    return render(request, 'book_search/gallery.html', {'user': request.user, 'books': list_books, 'text': text,
+                                                        'fno': get_no_followers(request.user)})
