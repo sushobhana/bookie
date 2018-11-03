@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'widget_tweaks',
     'multiselectfield',
+    'reset_migrations',
 
 ]
 
