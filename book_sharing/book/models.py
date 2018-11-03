@@ -37,7 +37,6 @@ class Book(models.Model):
 class UsersBook(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    quantity = IntegerRangeField(default=1, min_value=0)
 
     def __str__(self):
-        return self.book.title
+        return self.book.title + " " + self.user.user.username

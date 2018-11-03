@@ -1,8 +1,13 @@
 {% extends 'book_search/base.html' %}
 
 {% block content %}
-{% for book in books %}
+
+
 <div class="row">
+  {% if text != 'succesful' %}
+    {{ text }}
+  {% endif %}
+  {% for book in books %}
     <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
             <img class="card-img-top"
@@ -14,11 +19,9 @@
                       {{ tag }}
                     {% endfor %}
                  </p>
-                <!-- <p class="card-text">{{ book.author }}</p> -->
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                     </div>
 
                     <small class="text-muted">9 mins</small>
@@ -26,6 +29,7 @@
             </div>
         </div>
     </div>
+    {% endfor %}
 </div>
-{% endfor %}
+
 {% endblock %}

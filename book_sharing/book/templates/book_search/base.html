@@ -66,9 +66,9 @@
             {#            <p class="lead text-muted text-center bold">Search book information</p>#}
                   <img class="mb-4" src="{% static 'search.png' %}" alt="" width="100" height="100">
 
-            <form>
+            <form method="get" action="/search">
                 <input class="form-control input-group-lg text-center" type="search"
-                       placeholder="Search Books by name, author, tags" aria-label="Search">
+                       placeholder="Search Books by name, author, tags" aria-label="Search" name="query">
                 <button class="btn btn-primary my-4 my-sm-4 " type="submit">Search</button>
             </form>
         </div>
