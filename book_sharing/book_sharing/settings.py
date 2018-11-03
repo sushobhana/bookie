@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'book',
     'users',
     'widget_tweaks',
+    'multiselectfield',
+
 ]
 
 MIDDLEWARE = [

@@ -1,6 +1,9 @@
-from django.shortcuts import render
-from .models import Book
-from django.db.models import Q
+
+from django.shortcuts import render, redirect, get_object_or_404
+from users.models import UserProfile
+from .models import UsersBook, Book
+from .forms import BookForm
+
 # Create your views here.
 
 
@@ -12,12 +15,20 @@ def home(request):
     else:
         return render(request, 'book_search/gallery.html', {'user': 'Signin'})
 
-def search(request):
-    query = request.GET.get('query')
-    books = Book.objects.filter(Q(title__icontains = query) | Q(author__icontains = query) | Q(publisher__icontains = query))
-    if str(query) == "*":
-        books = Book.objects.all()[:2]
-    text = 'succesful'
-    if len(books) == 0:
-        text = 'Nothing matches your Query :('
-    return render(request, 'book_search/gallery.html', { 'user' : request.user , 'books': books, 'text': text})
+def add_book(request):
+    if request.user.is_authenticated:
+
+        if request.method == 'POST':
+            form = BookForm(request.POST)
+            if form.is_valid():
+                form.save()
+            book = Book.objects.filter(isbn=form.data['isbn'])[0]
+            user = get_object_or_404(UserProfile, user=request.user)
+            user_book = UsersBook.objects.create(taken_user=user, owner_user=user, book=book)
+            user_book.save()
+            return render(request, 'book_search/add_book.html', {'form': form})
+        else:
+            form = BookForm()
+            return render(request, 'book_search/add_book.html', {'form': form})
+    else:
+        return redirect('/user/signin')

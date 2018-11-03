@@ -19,5 +19,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home),
-    path('search/', views.search),
+    path('add', views.add_book)
+
 ]
