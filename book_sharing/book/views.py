@@ -1,8 +1,8 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from users.models import UserProfile
 from .models import UsersBook, Book
 from .forms import BookForm
+
 
 # Create your views here.
 
@@ -10,10 +10,10 @@ from .forms import BookForm
 def home(request):
     if request.user.is_authenticated:
         print(request.user)
-        books = Book.objects.all()[:2]
-        return render(request, 'book_search/gallery.html', {'user': request.user, 'books': books})
+        return render(request, 'book_search/gallery.html', {'user': request.user})
     else:
         return render(request, 'book_search/gallery.html', {'user': 'Signin'})
+
 
 def add_book(request):
     if request.user.is_authenticated:
