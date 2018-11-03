@@ -27,5 +27,6 @@ urlpatterns = [
     path('register_profile', views.register_profile),
     path('follow', views.follow),
     path('unfollow', views.unfollow),
+    path('friends', views.friends),
 
 ]

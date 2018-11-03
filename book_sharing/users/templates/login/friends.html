@@ -1,0 +1,14 @@
+{% extends 'login/base.html' %}
+
+{% block content %}
+    {% for friend in friends %}
+        <table class="table">
+        <tbody>
+        <tr>
+            <th scope="col-md-6">{{ friend.followed_to.username }}</th>
+            <th scope="col-md-6"><a class="badge badge-primary" href="/user/unfollow?user={{ friend.followed_to.username }}">Unfollow</a></th>
+        </tr>
+        </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}

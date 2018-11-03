@@ -192,3 +192,11 @@ def unfollow(request):
 
 def get_no_followers(user):
     return UserFollowers.objects.filter(followed_by=user).count()
+
+
+def friends(request):
+    if request.user.is_authenticated:
+        friends = UserFollowers.objects.filter(followed_by=request.user)
+        return render(request, 'login/friends.html', {'friends': friends})
+    else:
+        redirect('/user/login')

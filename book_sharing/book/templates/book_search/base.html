@@ -70,13 +70,15 @@
 
     <div class="nav-scroller bg-white shadow-sm">
         <nav class="nav nav-underline">
-            <a class="nav-link active" href="#">Dashboard</a>
-            <a class="nav-link" href="#">
+{#            <a class="nav-link active" href="#">Dashboard</a>#}
+            <a class="nav-link" href="/user/friends">
                 Friends
                 <span class="badge badge-pill bg-light align-text-bottom">{{ fno }}</span>
             </a>
-            <a class="nav-link" href="#">Explore</a>
+{#            <a class="nav-link" href="#">Explore</a>#}
             <a class="nav-link" href="#">Forum</a>
+            <a class="nav-link" href="/add">Add Book</a>
+            <a class="nav-link" href="/mybooks">My Books</a>
             <form class="form-inline mt-2 mt-md-0" method="get" action="/user/profile">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search user" aria-label="Search" name="user">
                 <button class="btn btn-outline-success my-2 my-sm-1" type="submit">Search User</button>
@@ -102,8 +104,8 @@
 
             <form method="get" action="/search">
                 <input class="form-control input-group-lg text-center" type="search"
-                       placeholder="Search Books by name, author, tags" aria-label="Search" name="query">
-                <button class="btn btn-primary my-4 my-sm-4 " type="submit">Search</button>
+                       placeholder="Search Books by title, author, tags" aria-label="Search" name="query">
+                <button class="btn btn-success my-4 my-sm-4 " type="submit">Search</button>
             </form>
         </div>
     </section>

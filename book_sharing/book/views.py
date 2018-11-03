@@ -27,6 +27,12 @@ def add_book(request):
             form = BookForm(request.POST)
             if form.is_valid():
                 form.save()
+            else:
+                isbn = form.data['isbn']
+                book = Book.objects.get(isbn=isbn)
+                if book:
+                    book.availability += book.availability
+
             book = Book.objects.filter(isbn=form.data['isbn'])[0]
             user = get_object_or_404(UserProfile, user=request.user)
             user_book = UsersBook.objects.create(taken_user=user, owner_user=user, book=book)
@@ -77,3 +83,13 @@ def search(request):
 
     return render(request, 'book_search/gallery.html', {'user': request.user, 'books': list_books, 'text': text,
                                                         'fno': get_no_followers(request.user)})
+
+def mybooks(request):
+    if request.user.is_authenticated:
+        user = UserProfile.objects.get(user = request.user)
+        books = UsersBook.objects.filter(owner_user=user)
+        books = [x.book for x in books]
+        return render(request, 'book_search/gallery.html', {'user': request.user, 'books': books,
+                                                            'text': 'successful', 'fno': get_no_followers(request.user)})
+    else:
+        return redirect('/user/signin')
