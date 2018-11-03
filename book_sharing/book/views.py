@@ -37,18 +37,18 @@ def add_book(request):
 
 
 def search(request):
-
     query = request.GET.get('query')
     tag = request.GET.get('tag')
+    author = request.GET.get('author')
 
-    if query is None and tag is None:
+    if query is None and tag is None and author is None:
         return redirect('/')
 
     list_books = []
 
     if query != '*' and query is not None:
         books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query)
-                                | Q(publisher__icontains=query))
+                                    | Q(publisher__icontains=query))
     else:
         query = '*'
 
@@ -59,11 +59,17 @@ def search(request):
         for book in books:
             if tag in book.tags:
                 list_books.append(book)
-    else:
+
+    if author is not None:
+        for book in books:
+            if author == book.author:
+                list_books.append(book)
+
+    if tag is None and author is None:
         list_books = books
 
     text = 'successful'
     if len(books) == 0:
         text = 'No Results found :('
 
-    return render(request, 'book_search/gallery.html', { 'user': request.user, 'books': list_books, 'text': text})
+    return render(request, 'book_search/gallery.html', {'user': request.user, 'books': list_books, 'text': text})

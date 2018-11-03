@@ -19,7 +19,6 @@ class IntegerRangeField(models.IntegerField):
 
 
 class Tags(models.Model):
-
     select_choices = ('EDUCATIONAL', 'NON-EDUCATIONAL')
     select_choices = {(x, x) for x in select_choices}
 
@@ -30,7 +29,6 @@ class Tags(models.Model):
 
 
 class Book(models.Model):
-
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     publisher = models.CharField(max_length=100)
@@ -48,7 +46,6 @@ class Book(models.Model):
 
 
 class UsersBook(models.Model):
-
     owner_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='creator')
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     taken_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='hasbook',
