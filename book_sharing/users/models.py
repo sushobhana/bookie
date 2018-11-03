@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+
+
 class UserProfile(models.Model):
 
     GENDER_CHOICES = (
@@ -24,3 +26,9 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class UserFollowers(models.Model):
+
+    followed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='follows')
+    followed_to = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='beingfollowed')

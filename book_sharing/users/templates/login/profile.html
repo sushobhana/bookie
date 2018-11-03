@@ -1,49 +1,46 @@
 {% extends 'login/base.html' %}
 
 {% block content %}
-    <h1>Hi {{ user }} !</h1>
-    {% load widget_tweaks %}
+    {% if not msg %}
+    <div class="alert alert-info" role="alert">
+        Profile Info
+    </div>
+    {% endif %}
+    {% if msg %}
+    <div class="alert alert-danger" role="alert">
+        {{ msg }}
+    </div>
+    {% endif %}
+    {% if user_profile %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">{{ user_profile.user.username }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Email</th>
+                <td>{{ user_profile.email }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Gender</th>
+                <td>{{ user_profile.gender }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Address</th>
+                <td>{{ user_profile.address }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Phone Number</th>
+                <td>{{ user_profile.phone_number }}</td>
+            </tr>
+            </tbody>
+        </table>
 
-    <form method="post" novalidate>
-        {% csrf_token %}
-
-        {% for hidden_field in form.hidden_fields %}
-            {{ hidden_field }}
-        {% endfor %}
-
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger" role="alert">
-                {% for error in form.non_field_errors %}
-                    {{ error }}
-                {% endfor %}
-            </div>
+        {% if own %}
+            <a class="button btn btn-primary" href="/user/profile_edit">Edit</a>
         {% endif %}
-
-        {% for field in form.visible_fields %}
-            <div class="form-group">
-                {{ field.label_tag }}
-
-                {% if form.is_bound %}
-                    {% if field.errors %}
-                        {% render_field field class="form-control is-invalid" %}
-                        {% for error in field.errors %}
-                            <div class="invalid-feedback">
-                                {{ error }}
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        {% render_field field class="form-control is-valid" %}
-                    {% endif %}
-                {% else %}
-                    {% render_field field class="form-control" %}
-                {% endif %}
-
-                {% if field.help_text %}
-                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                {% endif %}
-            </div>
-        {% endfor %}
-
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+    {% endif %}
 {% endblock %}

@@ -19,6 +19,7 @@ from . import views
 
 urlpatterns = [
     path('', views.user_profile),
+    path('profile_edit', views.user_profile_edit),
     path('profile', views.user_profile),
     path('signin', views.sign_in),
     path('signout', views.sign_out),

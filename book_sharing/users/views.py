@@ -8,7 +8,7 @@ from .forms import ProfileForm, UserForm
 from django.contrib.auth.models import User
 
 
-def user_profile(request):
+def user_profile_edit(request):
 
     if request.user.is_authenticated:
 
@@ -24,13 +24,35 @@ def user_profile(request):
             form = ProfileForm(request.POST, instance=profile)
             if form.is_valid():
                 form.save()
-            return render(request, 'login/profile.html', {'form': form, 'user': user.username})
+            return render(request, 'login/profile_form.html', {'form': form, 'user': user.username})
         else:
             form = ProfileForm(instance=profile)
-            return render(request, 'login/profile.html', {'form': form, 'user': user.username})
+            return render(request, 'login/profile_form.html', {'form': form, 'user': user.username})
     else:
 
         return redirect('/user/signin')
+
+
+def user_profile(request):
+
+    if request.user.is_authenticated:
+        username = request.GET.get('user')
+        own = False
+        if username:
+            user = User.objects.filter(username=username)
+            if user:
+                user = user[0]
+        else:
+            user = request.user
+            own = True
+        if user:
+            userprofile = UserProfile.objects.filter(user=user)[0]
+
+            return render(request, 'login/profile.html', {'user_profile': userprofile, 'own': own})
+        else:
+            return render(request, 'login/profile.html', {'own': own, 'msg': 'No user name'})
+    else:
+        return redirect('/user/login')
 
 
 def sign_in(request):
@@ -109,3 +131,4 @@ def register_profile(request):
 
         form = ProfileForm(instance=user)
         return render(request, 'login/register_profile.html', {'form': form, 'user': user.username})
+
