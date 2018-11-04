@@ -1,6 +1,11 @@
 {% extends 'login/base.html' %}
 
 {% block content %}
+    {% if not friends %}
+    <div class="alert alert-danger" role="alert">
+        You are alone :(
+    </div>
+    {% endif %}
     {% for friend in friends %}
         <table class="table">
         <tbody>

@@ -18,23 +18,13 @@ class IntegerRangeField(models.IntegerField):
         return super(IntegerRangeField, self).formfield(**defaults)
 
 
-class Tags(models.Model):
-    select_choices = ('EDUCATIONAL', 'NON-EDUCATIONAL')
-    select_choices = {(x, x) for x in select_choices}
-
-    name = models.CharField(choices=select_choices, null=True, blank=True, max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
 class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     publisher = models.CharField(max_length=100)
     edition = models.IntegerField()
 
-    select_choices = ('EDUCATIONAL', 'NON-EDUCATIONAL')
+    select_choices = ('EDUCATIONAL', 'NON-EDUCATIONAL', 'FICTION', 'COMEDY', 'THRILLER', 'DRAMA')
     select_choices = {(x, x) for x in select_choices}
     tags = MultiSelectField(choices=select_choices, null=True, blank=True, max_length=50)
     description = models.CharField(max_length=300)
@@ -51,6 +41,7 @@ class UsersBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     taken_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='hasbook',
                                    default=None, null=True)
+    pending_request = IntegerRangeField(min_value=0, max_value=1, default=0)
 
     def __str__(self):
         return self.book.title
