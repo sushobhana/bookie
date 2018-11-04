@@ -15,9 +15,9 @@
                         <p class="card-text">
                             <a href="https://www.google.com/search?query={{ book.title }}">
                                 <h3>{{ book.title }} </h3></a><br>
-                            <a href="/search?author={{ book.author }}"> {{ book.author }} </a> <br>
+                            <a href="/search?query={{ book.author }}"> {{ book.author }} </a> <br>
                             {% for tag in book.tags %}
-                                <a href="/search?tag={{ tag }}"> {{ tag }} </a>
+                                <a href="/search?query={{ tag }}"> {{ tag }} </a>
                             {% endfor %}
                         </p>
                         <div class="d-flex justify-content-between align-items-center">

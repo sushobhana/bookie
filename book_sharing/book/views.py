@@ -5,6 +5,7 @@ from .forms import BookForm
 from django.db.models import Q
 from django.contrib.auth.models import User
 from users.views import get_no_followers
+from difflib import SequenceMatcher
 
 
 # Create your views here.
@@ -16,7 +17,7 @@ def home(request):
         books = Book.objects.all()
 
         return render(request, 'book_search/gallery.html', {'user': request.user, 'books': books,
-                                                            'fno':get_no_followers(request.user)})
+                                                            'fno': get_no_followers(request.user)})
     else:
         return render(request, 'book_search/gallery.html', {'user': 'Signin'})
 
@@ -194,50 +195,77 @@ def add_book_form(request):
         return redirect('/user/signin')
 
 def search(request):
-    query = request.GET.get('query')
-    tag = request.GET.get('tag')
-    author = request.GET.get('author')
+    fulltext = request.GET.get('query')
 
-    if query is None and tag is None and author is None:
+    if fulltext is None:
         return redirect('/')
 
-    list_books = []
+    titles = Book.objects.values('title')
+    authors = Book.objects.values('author')
+    tags = Book._meta.get_field('tags').choices
+    query = []
+    p_query = []
 
-    if query != '*' and query is not None:
-        books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query)
-                                    | Q(publisher__icontains=query))
+    THRESHOLD = .4
+
+    titles = [x['title'] for x in titles]
+    authors = [x['author'] for x in authors]
+    tags = [x[0] for x in tags]
+    print(tags)
+
+    for title in titles:
+        print(title, fulltext)
+        score = SequenceMatcher(None, title.lower(), fulltext.lower()).ratio()
+        if score == 1:
+            # Perfect Match for name
+            p_query += Book.objects.filter(Q(title=title))
+        elif score >= THRESHOLD:
+            query += (Book.objects.filter(Q(title=title)))
+
+    for author in authors:
+        print(author, fulltext)
+        score = SequenceMatcher(None, author.lower(), fulltext.lower()).ratio()
+        if score == 1:
+            # Perfect Match for name
+            p_query += Book.objects.filter(Q(author=author))
+
+        elif score >= THRESHOLD:
+            query += (Book.objects.filter(Q(author=author)))
+
+    for tag in tags:
+        print(tag, fulltext)
+        score = SequenceMatcher(None, tag.lower(), fulltext.lower()).ratio()
+        if score == 1:
+            # Perfect Match for name
+            p_query += Book.objects.filter(Q(tags=[tag]))
+        elif score >= .3:
+            for book in Book.objects.all():
+                if tag in book.tags:
+                    query.append(book)
+
+    if len(p_query) > 0:
+        query = p_query
+
+    query = set(query)
+
+    text = ''
+    if not query:
+        text = 'No Results found :( Try with some more characters'
+        return render(request, 'book_search/gallery.html', {'user': request.user, 'text': text,
+                                                            'fno': get_no_followers(request.user)})
     else:
-        query = '*'
 
-    if query == '*':
-        books = Book.objects.all()
+        return render(request, 'book_search/gallery.html', {'user': request.user, 'books': query, 'text': text,
+                                                            'fno': get_no_followers(request.user)})
 
-    if tag is not None:
-        for book in books:
-            if tag in book.tags:
-                list_books.append(book)
-
-    if author is not None:
-        for book in books:
-            if author == book.author:
-                list_books.append(book)
-
-    if tag is None and author is None:
-        list_books = books
-
-    text = 'successful'
-    if len(books) == 0:
-        text = 'No Results found :('
-
-    return render(request, 'book_search/gallery.html', {'user': request.user, 'books': list_books, 'text': text,
-                                                        'fno': get_no_followers(request.user)})
 
 def mybooks(request):
     if request.user.is_authenticated:
-        user = UserProfile.objects.get(user = request.user)
+        user = UserProfile.objects.get(user=request.user)
         books = UsersBook.objects.filter(owner_user=user)
         books = [x.book for x in books]
         return render(request, 'book_search/gallery.html', {'user': request.user, 'books': books,
-                                                            'text': 'successful', 'fno': get_no_followers(request.user)})
+                                                            'text': 'successful',
+                                                            'fno': get_no_followers(request.user)})
     else:
         return redirect('/user/signin')
