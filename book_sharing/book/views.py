@@ -14,7 +14,7 @@ from difflib import SequenceMatcher
 def home(request):
     if request.user.is_authenticated:
         print(request.user)
-        books = Book.objects.all()
+        books = Book.objects.all().order_by('-rating')[0: 15]
 
         return render(request, 'book_search/gallery.html', {'user': request.user, 'books': books,
                                                             'fno': get_no_followers(request.user)})
@@ -23,23 +23,22 @@ def home(request):
 
 
 def owners(request):
+    isbn = request.GET.get('isbn')
+    book = Book.objects.get(isbn=isbn)
+    user = UserProfile.objects.get(user=request.user)
 
-     isbn = request.GET.get('isbn')
-     book = Book.objects.get(isbn = isbn)
-     user = UserProfile.objects.get(user = request.user)
+    owner = UsersBook.objects.filter(owner_user=user).filter(book=book)
 
-     owner = UsersBook.objects.filter( owner_user=user).filter(book=book)
-
-     if owner:
+    if owner:
         return redirect(mybooks)
 
-     owner = UsersBook.objects.filter( taken_user=user).filter(book=book)
+    owner = UsersBook.objects.filter(taken_user=user).filter(book=book)
 
-     if owner:
-       return redirect(requests)
+    if owner:
+        return redirect(requests)
 
-     owners = UsersBook.objects.filter(book = book)
-     return render(request, 'book_search/owners.html', {'owners': owners})
+    owners = UsersBook.objects.filter(book=book)
+    return render(request, 'book_search/owners.html', {'owners': owners})
 
 
 def requests(request):
@@ -54,7 +53,7 @@ def requests(request):
 
     return render(request, 'book_search/requests.html',
                   {'pending_request': pending_request,
-                   'your_request': your_request,'your_books': books})
+                   'your_request': your_request, 'your_books': books})
 
 
 def grant(request):
@@ -120,14 +119,15 @@ def return_book(request):
 
     return redirect(requests)
 
+
 def requestbook(request):
     if request.user.is_authenticated:
         owner = request.GET.get('owner')
         owner = User.objects.get(username=owner)
-        owner = UserProfile.objects.get( user=owner )
+        owner = UserProfile.objects.get(user=owner)
         book = request.GET.get('isbn')
-        book = Book.objects.get(isbn = book)
-        requester = UserProfile.objects.get(user = request.user)
+        book = Book.objects.get(isbn=book)
+        requester = UserProfile.objects.get(user=request.user)
 
         userbook = UsersBook.objects.get(owner_user=owner, book=book, taken_user=owner)
         if userbook:
@@ -147,17 +147,16 @@ def add_book(request):
 
         if request.GET.get('isbn') == None and request.GET.get('q') != None:
             isbn = request.GET.get('q')
-            book = Book.objects.get(isbn = isbn)
-            user = UserProfile.objects.get(user = request.user)
+            book = Book.objects.get(isbn=isbn)
+            user = UserProfile.objects.get(user=request.user)
 
-            books = Book.objects.filter( isbn = isbn)
+            books = Book.objects.filter(isbn=isbn)
             text = 'successful'
 
-            owner = UsersBook.objects.filter( owner_user=user).filter(book=book)
+            owner = UsersBook.objects.filter(owner_user=user).filter(book=book)
 
             if owner:
                 return render(request, 'book_search/add_book.html', {'books': books, 'text': text})
-
 
             book.availability += 1
             book.save()
@@ -171,7 +170,7 @@ def add_book(request):
             books = None
         else:
             isbn = request.GET.get('isbn')
-            books = Book.objects.filter( isbn = isbn)
+            books = Book.objects.filter(isbn=isbn)
             text = 'successful'
             if len(books) == 0:
                 text = 'failure'
@@ -180,6 +179,7 @@ def add_book(request):
 
     else:
         return redirect('/user/signin')
+
 
 def add_book_form(request):
     if request.user.is_authenticated:
@@ -199,6 +199,7 @@ def add_book_form(request):
             return render(request, 'book_search/add_book_form.html', {'form': form})
     else:
         return redirect('/user/signin')
+
 
 def search(request):
     fulltext = request.GET.get('query')
