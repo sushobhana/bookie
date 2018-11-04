@@ -25,9 +25,7 @@
             <div class="row">
                 <div class="col-sm-8 col-md-7 py-4">
                     <h4 class="text-white">About</h4>
-                    <p class="text-muted">Add some information about the album below, the author, or any other
-                        background context. Make it a few sentences long so folks can pick up some informative tidbits.
-                        Then, link them off to some social networking sites or contact information.</p>
+                    <p class="text-muted">A personal book sharing system.</p>
                 </div>
                 <div class="col-sm-4 offset-md-1 py-4">
                     <h4 class="text-white">Contact</h4>
@@ -70,18 +68,19 @@
 
     <div class="nav-scroller bg-white shadow-sm">
         <nav class="nav nav-underline">
-{#            <a class="nav-link active" href="#">Dashboard</a>#}
+            {#            <a class="nav-link active" href="#">Dashboard</a>#}
             <a class="nav-link" href="/user/friends">
                 Friends
                 <span class="badge badge-pill bg-light align-text-bottom">{{ fno }}</span>
             </a>
-{#            <a class="nav-link" href="#">Explore</a>#}
+            {#            <a class="nav-link" href="#">Explore</a>#}
             <a class="nav-link" href="/requests">Requests</a>
             <a class="nav-link" href="/add">Add Book</a>
             <a class="nav-link" href="/mybooks">My Books</a>
 
             <form class="form-inline mt-2 mt-md-0" method="get" action="/user/profile">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search user" aria-label="Search" name="user">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search user" aria-label="Search"
+                       name="user">
                 <button class="btn btn-outline-success my-2 my-sm-1" type="submit">Search User</button>
             </form>
             {#            <a class="nav-link" href="#">Link</a>#}

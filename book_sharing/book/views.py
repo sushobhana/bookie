@@ -47,8 +47,14 @@ def requests(request):
     pending_request = UsersBook.objects.filter(owner_user=owner, pending_request=1)
     your_request = UsersBook.objects.filter(taken_user=owner, pending_request=1)
     your_books = UsersBook.objects.filter(taken_user=owner, pending_request=0)
+    books = []
+    for book in your_books:
+        if book.taken_user != book.owner_user:
+            books.append(book)
 
-    return render(request, 'book_search/requests.html', {'pending_request': pending_request, 'your_request': your_request,'your_books': your_books})
+    return render(request, 'book_search/requests.html',
+                  {'pending_request': pending_request,
+                   'your_request': your_request,'your_books': books})
 
 
 def grant(request):
@@ -206,7 +212,7 @@ def search(request):
     query = []
     p_query = []
 
-    THRESHOLD = .4
+    THRESHOLD = .7
 
     titles = [x['title'] for x in titles]
     authors = [x['author'] for x in authors]

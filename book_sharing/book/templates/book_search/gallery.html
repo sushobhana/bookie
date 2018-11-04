@@ -15,7 +15,9 @@
                         <p class="card-text">
                             <a href="https://www.google.com/search?query={{ book.title }}">
                                 <h3>{{ book.title }} </h3></a><br>
+                        <h6><strong>Rating: {{ book.rating }}</strong></h6>
                             <a href="/search?query={{ book.author }}"> {{ book.author }} </a> <br>
+
                             {% for tag in book.tags %}
                                 <a href="/search?query={{ tag }}"> {{ tag }} </a>
                             {% endfor %}
@@ -28,11 +30,11 @@
                                         <span class="sr-only">Availability</span>
                                     </button>
 
-                                    <a class="btn btn-primary" data-toggle="collapse"
-                                       href="#multiCollapseExample{{ forloop.counter0 }}"
-                                       role="button" aria-expanded="false"
-                                       aria-controls="multiCollapseExample1">View
-                                    </a>
+                                    {#                                    <a class="btn btn-primary" data-toggle="collapse"#}
+                                    {#                                       href="#multiCollapseExample{{ forloop.counter0 }}"#}
+                                    {#                                       role="button" aria-expanded="false"#}
+                                    {#                                       aria-controls="multiCollapseExample1">View#}
+                                    {#                                    </a>#}
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 

@@ -2,56 +2,69 @@
 
 {% block content %}
     Pending requests<br>
-    {% if not pending_request  %}
-    <div class="alert alert-danger" role="alert">
-        No Pending Request
-    </div>
+    {% if not pending_request %}
+        <div class="alert alert-danger" role="alert">
+            No Pending Request
+        </div>
     {% endif %}
     {% for item in pending_request %}
         <table class="table">
-        <tbody>
-        <tr>
-            <th scope="col-md-6"><a href="/user/profile?user={{ item.taken_user.user.username }}">{{ item.taken_user.user.username }}</a></th>
-            <th scope="col-md-6">{{ item.book.title }}</th>
-            <th scope="col-md-6"><a class="badge badge-primary" href="/grant?owner={{ item.owner_user.user.username }}&isbn={{ item.book.isbn }}&requester={{ item.taken_user.user.username }}">Grant</a></th>
-            <th scope="col-md-6"><a class="badge badge-primary" href="/deny?owner={{ item.owner_user.user.username }}&isbn={{ item.book.isbn }}&requester={{ item.taken_user.user.username }}">Deny</a></th>
-        </tr>
-        </tbody>
+            <tbody>
+            <tr>
+                <th scope="col-md-6"><a
+                        href="/user/profile?user={{ item.taken_user.user.username }}">{{ item.taken_user.user.username }}</a>
+                </th>
+                <th scope="col-md-6"><a href="/search?query={{ item.book.title }}">{{ item.book.title }}</a></th>
+
+                <th scope="col-md-6"><a class="badge badge-primary"
+                                        href="/grant?owner={{ item.owner_user.user.username }}&isbn={{ item.book.isbn }}&requester={{ item.taken_user.user.username }}">Grant</a>
+                </th>
+                <th scope="col-md-6"><a class="badge badge-primary"
+                                        href="/deny?owner={{ item.owner_user.user.username }}&isbn={{ item.book.isbn }}&requester={{ item.taken_user.user.username }}">Deny</a>
+                </th>
+            </tr>
+            </tbody>
         </table>
     {% endfor %}
     <br><br>
     Your requests<br>
-    {% if not your_request  %}
-    <div class="alert alert-danger" role="alert">
-        No Pending Request
-    </div>
+    {% if not your_request %}
+        <div class="alert alert-danger" role="alert">
+            No Requests from you
+        </div>
     {% endif %}
     {% for item in your_request %}
         <table class="table">
-        <tbody>
-        <tr>
-            <th scope="col-md-6"><a href="/user/profile?user={{ item.owner_user.user.username }}">{{ item.owner_user.user.username }}</a></th>
-            <th scope="col-md-6">{{ item.book.title }}</th>
-        </tr>
-        </tbody>
+            <tbody>
+            <tr>
+                <th scope="col-md-6"><a
+                        href="/user/profile?user={{ item.owner_user.user.username }}">{{ item.owner_user.user.username }}</a>
+                </th>
+                <th scope="col-md-6"><a href="/search?query={{ item.book.title }}">{{ item.book.title }}</a></th>
+            </tr>
+            </tbody>
         </table>
     {% endfor %}
     <br><br>
     Borrowed Books<br>
-    {% if not your_books  %}
-    <div class="alert alert-danger" role="alert">
-        No Pending Request
-    </div>
+    {% if not your_books %}
+        <div class="alert alert-danger" role="alert">
+            No Books Borrowed
+        </div>
     {% endif %}
     {% for item in your_books %}
-    <table class="table">
-    <tbody>
-    <tr>
-      <th scope="col-md-6">{{ item.owner_user.user.username }}</th>
-        <th scope="col-md-6">{{ item.book.title }}</th>
-        <th scope="col-md-6"><a class="badge badge-primary" href="/return?owner={{ item.owner_user.user.username }}&isbn={{ item.book.isbn }}&requester={{ item.taken_user.user.username }}">Return</a></th>
-    </tr>
-    </tbody>
-    </table>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th scope="col-md-6"><a
+                        href="/user/profile?user={{ item.owner_user.user.username }}">{{ item.owner_user.user.username }}</a>
+                </th>
+                <th scope="col-md-6"><a href="/search?query={{ item.book.title }}">{{ item.book.title }}</a></th>
+                <th scope="col-md-6"><a class="badge badge-primary"
+                                        href="/return?owner={{ item.owner_user.user.username }}&isbn={{ item.book.isbn }}&requester={{ item.taken_user.user.username }}">Return</a>
+                </th>
+            </tr>
+            </tbody>
+        </table>
     {% endfor %}
 {% endblock %}
