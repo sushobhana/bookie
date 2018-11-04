@@ -2,51 +2,58 @@
 
 {% block content %}
 
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="item_update_form" method='post' class="form" role="form"  >
-                <div class="modal-header text-center">
+<form method="get" action="/add">
+    <input class="form-control input-group-lg text-center" type="search"
+           placeholder="Search Books by ISBN" aria-label="Search" name='isbn'>
+    <button class="btn btn-success my-4 my-sm-4 " type="submit">Search</button>
+</form>
 
-                    <h4 class="modal-title" id="myModalLabel">Add a book</h4>
-{#                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>#}
+{% if text != 'successful' %}
+    Didn't find your book :( Don't worry click <a href='addform'>here</a>
+{% endif %}
+
+{% for book in books %}
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            {#                    <img class="card-img-top"#}
+            {#                         data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"#}
+            {#                         alt="Card image cap">#}
+            <div class="card-body">
+                <p class="card-text">
+                    <a href="https://www.google.com/search?query={{ book.title }}">
+                        <h3>{{ book.title }} </h3></a><br>
+                    <a href="/search?author={{ book.author }}"> {{ book.author }} </a> <br>
+                    {% for tag in book.tags %}
+                        <a href="/search?tag={{ tag }}"> {{ tag }} </a>
+                    {% endfor %}
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-info">
+                                Availability <span class="badge badge-light">{{ book.availability }}</span>
+                                <span class="sr-only">Availability</span>
+                            </button>
+
+                            <a class="btn btn-primary" data-toggle="collapse"
+                               href="#multiCollapseExample{{ forloop.counter0 }}"
+                               role="button" aria-expanded="false"
+                               aria-controls="multiCollapseExample1">View
+                            </a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <a class="btn btn-primary"
+                               href="/add?q={{ book.isbn }}">+
+                            </a>
+
+                        </div>
+                    </div>
 
                 </div>
-                <div class="modal-body">
-                    {% csrf_token %}
-                    {{ form.non_field_errors }}
-                    <div class="form-group">
-                        {% for field in form %}
-                            <div class="form-group">
-                                {% if field.errors %}
-                                    <p class="form-errors">
-                                        {% for error in field.errors %}
-                                            <p><span class="fa fa-exclamation-triangle"></span>
-                                                <strong>{{ error|escape }}</strong></p>
-                                        {% endfor %}
-                                    </p>
-                                {% endif %}
-                                {{ field.label_tag }} {{ field }}
-                                {% if field.help_text %}
-                                    <div class="form-helptext">{{ field.help_text }}</div>{% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="modal-footer">
-{#                        <input type="button" class="btn btn-default" data-dismiss="modal" value="annulla"/>#}
-                        <input type="submit" class="btn btn-primary" value="Enter" style="margin-bottom: 5px;"/>
-                    </div>
-                </div>
-            </form>
-            <script>
-                jQuery('.modal-content .calendar').datepicker({dateFormat: "yy-mm-dd"});
+            </div>
+        </div>
+    </div>
+{% endfor %}
 
-                var form_options = {
-                    target: '#modal',
-                    success: function () {
-                    }
-                }
-                $('#item_update_form').ajaxForm(form_options);
-            </script>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
 {% endblock %}

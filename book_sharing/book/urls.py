@@ -20,6 +20,13 @@ from . import views
 urlpatterns = [
     path('', views.home),
     path('add', views.add_book),
+    path('addform', views.add_book_form),
     path('search', views.search),
     path('mybooks', views.mybooks),
+    path('owners', views.owners),
+    path('request', views.requestbook),
+    path('requests', views.requests),
+    path('grant', views.grant),
+    path('deny', views.deny),
+    path('return', views.return_book)
 ]

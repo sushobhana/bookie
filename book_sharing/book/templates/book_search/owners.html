@@ -1,0 +1,14 @@
+{% extends 'login/base.html' %}
+
+{% block content %}
+    {% for owner in owners %}
+        <table class="table">
+        <tbody>
+        <tr>
+            <th scope="col-md-6">{{ owner.owner_user.user.username }}</th>
+            <th scope="col-md-6"><a class="badge badge-primary" href="/request?owner={{ owner.owner_user.user.username }}&isbn={{ owner.book.isbn }}">Request</a></th>
+        </tr>
+        </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
