@@ -2,50 +2,50 @@
 
 {% block content %}
 
-<div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <form id="item_update_form" method='post' class="form" role="form"  >
-            <div class="modal-header text-center">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="item_update_form" method='post' class="form" role="form">
+                <div class="modal-header text-center">
 
-                <h4 class="modal-title" id="myModalLabel">Add a book</h4>
-{#                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>#}
+                    <h4 class="modal-title" id="myModalLabel">Add a book</h4>
+                    {#                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>#}
 
-            </div>
-            <div class="modal-body">
-                {% csrf_token %}
-                {{ form.non_field_errors }}
-                <div class="form-group">
-                    {% for field in form %}
-                        <div class="form-group">
-                            {% if field.errors %}
-                                <p class="form-errors">
-                                    {% for error in field.errors %}
-                                        <p><span class="fa fa-exclamation-triangle"></span>
-                                            <strong>{{ error|escape }}</strong></p>
-                                    {% endfor %}
-                            {% endif %}
-                            {{ field.label_tag }} {{ field }}
-                            {% if field.help_text %}
-                                <div class="form-helptext">{{ field.help_text }}</div>{% endif %}
-                        </div>
-                    {% endfor %}
                 </div>
-                <div class="modal-footer">
-{#                        <input type="button" class="btn btn-default" data-dismiss="modal" value="annulla"/>#}
-                    <input type="submit" class="btn btn-primary" value="Enter" style="margin-bottom: 5px;"/>
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="form-group">
+                        {% for field in form %}
+                            <div class="form-group">
+                                {% if field.errors %}
+                                    <p class="form-errors">
+                                        {% for error in field.errors %}
+                                            <p><span class="fa fa-exclamation-triangle"></span>
+                                                <strong>{{ error|escape }}</strong></p>
+                                        {% endfor %}
+                                {% endif %}
+                                {{ field.label_tag }} {{ field }}
+                                {% if field.help_text %}
+                                    <div class="form-helptext">{{ field.help_text }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        {#                        <input type="button" class="btn btn-default" data-dismiss="modal" value="annulla"/>#}
+                        <input type="submit" class="btn btn-primary" value="Enter" style="margin-bottom: 5px;"/>
+                    </div>
                 </div>
-            </div>
-        </form>
-        <script>
-            jQuery('.modal-content .calendar').datepicker({dateFormat: "yy-mm-dd"});
+            </form>
+            <script>
+                jQuery('.modal-content .calendar').datepicker({dateFormat: "yy-mm-dd"});
 
-            var form_options = {
-                target: '#modal',
-                success: function () {
+                var form_options = {
+                    target: '#modal',
+                    success: function () {
+                    }
                 }
-            }
-            $('#item_update_form').ajaxForm(form_options);
-        </script>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
+                $('#item_update_form').ajaxForm(form_options);
+            </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 {% endblock %}

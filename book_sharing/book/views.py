@@ -213,7 +213,7 @@ def search(request):
     query = []
     p_query = []
 
-    THRESHOLD = .7
+    THRESHOLD = .6
 
     titles = [x['title'] for x in titles]
     authors = [x['author'] for x in authors]
@@ -245,7 +245,7 @@ def search(request):
         if score == 1:
             # Perfect Match for name
             p_query += Book.objects.filter(Q(tags=[tag]))
-        elif score >= .3:
+        elif score >= .5:
             for book in Book.objects.all():
                 if tag in book.tags:
                     query.append(book)

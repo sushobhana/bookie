@@ -44,7 +44,8 @@
         {% endif %}
         {% if not own %}
             {% if isfollows %}
-                <a class="button btn btn-primary" href="/user/unfollow?user={{ user_profile.user.username }}">UnFollow</a>
+                <a class="button btn btn-primary"
+                   href="/user/unfollow?user={{ user_profile.user.username }}">UnFollow</a>
             {% endif %}
 
             {% if not isfollows %}
